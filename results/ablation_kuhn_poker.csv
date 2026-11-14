@@ -1,0 +1,225 @@
+game,config,alternating,linear,rm_plus,iteration,exploitability
+kuhn_poker,vanilla (simultaneous),False,False,False,1,0.45833333333333326
+kuhn_poker,vanilla (simultaneous),False,False,False,2,0.3125
+kuhn_poker,vanilla (simultaneous),False,False,False,3,0.2708333333333333
+kuhn_poker,vanilla (simultaneous),False,False,False,4,0.2326388888888889
+kuhn_poker,vanilla (simultaneous),False,False,False,5,0.1885732323232323
+kuhn_poker,vanilla (simultaneous),False,False,False,6,0.1512079803410448
+kuhn_poker,vanilla (simultaneous),False,False,False,8,0.10869354754859833
+kuhn_poker,vanilla (simultaneous),False,False,False,11,0.0906188385669339
+kuhn_poker,vanilla (simultaneous),False,False,False,14,0.0712005160168766
+kuhn_poker,vanilla (simultaneous),False,False,False,18,0.06140387020841506
+kuhn_poker,vanilla (simultaneous),False,False,False,23,0.05999370761018133
+kuhn_poker,vanilla (simultaneous),False,False,False,30,0.05369678432439698
+kuhn_poker,vanilla (simultaneous),False,False,False,39,0.044522621754934905
+kuhn_poker,vanilla (simultaneous),False,False,False,51,0.036701767681684955
+kuhn_poker,vanilla (simultaneous),False,False,False,66,0.03316123318281236
+kuhn_poker,vanilla (simultaneous),False,False,False,86,0.028791065070121552
+kuhn_poker,vanilla (simultaneous),False,False,False,112,0.023500238979274113
+kuhn_poker,vanilla (simultaneous),False,False,False,145,0.019877415810229032
+kuhn_poker,vanilla (simultaneous),False,False,False,189,0.01774537188417341
+kuhn_poker,vanilla (simultaneous),False,False,False,246,0.015303756774308647
+kuhn_poker,vanilla (simultaneous),False,False,False,319,0.013106455240822046
+kuhn_poker,vanilla (simultaneous),False,False,False,415,0.011953519578759536
+kuhn_poker,vanilla (simultaneous),False,False,False,539,0.009966101257508325
+kuhn_poker,vanilla (simultaneous),False,False,False,701,0.008618414528990093
+kuhn_poker,vanilla (simultaneous),False,False,False,911,0.007925037098641174
+kuhn_poker,vanilla (simultaneous),False,False,False,1184,0.006864753056533751
+kuhn_poker,vanilla (simultaneous),False,False,False,1539,0.00600608495000296
+kuhn_poker,vanilla (simultaneous),False,False,False,2000,0.005287831426631251
+kuhn_poker,RM+,False,False,True,1,0.45833333333333326
+kuhn_poker,RM+,False,False,True,2,0.3125
+kuhn_poker,RM+,False,False,True,3,0.2671356421356422
+kuhn_poker,RM+,False,False,True,4,0.21185612897569425
+kuhn_poker,RM+,False,False,True,5,0.1562998404898437
+kuhn_poker,RM+,False,False,True,6,0.10944004485442402
+kuhn_poker,RM+,False,False,True,8,0.09125985554375174
+kuhn_poker,RM+,False,False,True,11,0.10193216857748133
+kuhn_poker,RM+,False,False,True,14,0.07818329967986243
+kuhn_poker,RM+,False,False,True,18,0.040941327112003656
+kuhn_poker,RM+,False,False,True,23,0.053252673547723506
+kuhn_poker,RM+,False,False,True,30,0.04450042701438195
+kuhn_poker,RM+,False,False,True,39,0.02925849403414088
+kuhn_poker,RM+,False,False,True,51,0.02818759837852483
+kuhn_poker,RM+,False,False,True,66,0.02662144147546386
+kuhn_poker,RM+,False,False,True,86,0.01761599397123831
+kuhn_poker,RM+,False,False,True,112,0.012933534196047675
+kuhn_poker,RM+,False,False,True,145,0.011713199864920087
+kuhn_poker,RM+,False,False,True,189,0.01244433167739889
+kuhn_poker,RM+,False,False,True,246,0.008838882829974803
+kuhn_poker,RM+,False,False,True,319,0.009988001045391853
+kuhn_poker,RM+,False,False,True,415,0.008464342570185551
+kuhn_poker,RM+,False,False,True,539,0.00541645389619913
+kuhn_poker,RM+,False,False,True,701,0.005831355910127706
+kuhn_poker,RM+,False,False,True,911,0.003945608777017523
+kuhn_poker,RM+,False,False,True,1184,0.004254789767014905
+kuhn_poker,RM+,False,False,True,1539,0.003016537498867433
+kuhn_poker,RM+,False,False,True,2000,0.00294159173420086
+kuhn_poker,lin,False,True,False,1,0.45833333333333326
+kuhn_poker,lin,False,True,False,2,0.3194444444444444
+kuhn_poker,lin,False,True,False,3,0.2708333333333333
+kuhn_poker,lin,False,True,False,4,0.21805555555555559
+kuhn_poker,lin,False,True,False,5,0.14947390572390568
+kuhn_poker,lin,False,True,False,6,0.10705218467315242
+kuhn_poker,lin,False,True,False,8,0.12355324074074073
+kuhn_poker,lin,False,True,False,11,0.11383653229169113
+kuhn_poker,lin,False,True,False,14,0.09684316158798092
+kuhn_poker,lin,False,True,False,18,0.09980876756426121
+kuhn_poker,lin,False,True,False,23,0.11314413249887681
+kuhn_poker,lin,False,True,False,30,0.11030826416307823
+kuhn_poker,lin,False,True,False,39,0.07060325450293034
+kuhn_poker,lin,False,True,False,51,0.06614414958497497
+kuhn_poker,lin,False,True,False,66,0.05694144824801953
+kuhn_poker,lin,False,True,False,86,0.05712398478405148
+kuhn_poker,lin,False,True,False,112,0.03551118045099397
+kuhn_poker,lin,False,True,False,145,0.04804997021623672
+kuhn_poker,lin,False,True,False,189,0.026357664465609415
+kuhn_poker,lin,False,True,False,246,0.03330142663232291
+kuhn_poker,lin,False,True,False,319,0.02482220014699177
+kuhn_poker,lin,False,True,False,415,0.019956982994444927
+kuhn_poker,lin,False,True,False,539,0.025391327992001417
+kuhn_poker,lin,False,True,False,701,0.020355836515792453
+kuhn_poker,lin,False,True,False,911,0.017899629680301815
+kuhn_poker,lin,False,True,False,1184,0.016592154957816796
+kuhn_poker,lin,False,True,False,1539,0.008907716188015724
+kuhn_poker,lin,False,True,False,2000,0.011749840236079973
+kuhn_poker,lin+RM+,False,True,True,1,0.45833333333333326
+kuhn_poker,lin+RM+,False,True,True,2,0.3194444444444444
+kuhn_poker,lin+RM+,False,True,True,3,0.2757034632034632
+kuhn_poker,lin+RM+,False,True,True,4,0.1838291137204181
+kuhn_poker,lin+RM+,False,True,True,5,0.10699746615471772
+kuhn_poker,lin+RM+,False,True,True,6,0.06103136852602309
+kuhn_poker,lin+RM+,False,True,True,8,0.06480737705300851
+kuhn_poker,lin+RM+,False,True,True,11,0.08286648945901587
+kuhn_poker,lin+RM+,False,True,True,14,0.059717771783016765
+kuhn_poker,lin+RM+,False,True,True,18,0.029225282293281085
+kuhn_poker,lin+RM+,False,True,True,23,0.037242488677226654
+kuhn_poker,lin+RM+,False,True,True,30,0.034191293340528145
+kuhn_poker,lin+RM+,False,True,True,39,0.01428758921822601
+kuhn_poker,lin+RM+,False,True,True,51,0.02328907288338164
+kuhn_poker,lin+RM+,False,True,True,66,0.019411529789849696
+kuhn_poker,lin+RM+,False,True,True,86,0.010515842465372821
+kuhn_poker,lin+RM+,False,True,True,112,0.006318036704114516
+kuhn_poker,lin+RM+,False,True,True,145,0.007522655414405777
+kuhn_poker,lin+RM+,False,True,True,189,0.009022275848606015
+kuhn_poker,lin+RM+,False,True,True,246,0.0064191136432720786
+kuhn_poker,lin+RM+,False,True,True,319,0.008177152084042072
+kuhn_poker,lin+RM+,False,True,True,415,0.006806958106202049
+kuhn_poker,lin+RM+,False,True,True,539,0.003552212300378138
+kuhn_poker,lin+RM+,False,True,True,701,0.00422384113302568
+kuhn_poker,lin+RM+,False,True,True,911,0.002533138786536049
+kuhn_poker,lin+RM+,False,True,True,1184,0.0030720395404147394
+kuhn_poker,lin+RM+,False,True,True,1539,0.00235054451329883
+kuhn_poker,lin+RM+,False,True,True,2000,0.0018959227668077228
+kuhn_poker,alt,True,False,False,1,0.45833333333333326
+kuhn_poker,alt,True,False,False,2,0.27083333333333337
+kuhn_poker,alt,True,False,False,3,0.1944444444444444
+kuhn_poker,alt,True,False,False,4,0.14062500000000003
+kuhn_poker,alt,True,False,False,5,0.12138888888888891
+kuhn_poker,alt,True,False,False,6,0.09672619047619041
+kuhn_poker,alt,True,False,False,8,0.09045463963098324
+kuhn_poker,alt,True,False,False,11,0.06046924690611866
+kuhn_poker,alt,True,False,False,14,0.055491770881090086
+kuhn_poker,alt,True,False,False,18,0.04926564925379609
+kuhn_poker,alt,True,False,False,23,0.034594522147425616
+kuhn_poker,alt,True,False,False,30,0.022976662780746587
+kuhn_poker,alt,True,False,False,39,0.022325694870475782
+kuhn_poker,alt,True,False,False,51,0.014479024570810684
+kuhn_poker,alt,True,False,False,66,0.01216191901687072
+kuhn_poker,alt,True,False,False,86,0.010055447102741921
+kuhn_poker,alt,True,False,False,112,0.007703693164179348
+kuhn_poker,alt,True,False,False,145,0.00609814275043602
+kuhn_poker,alt,True,False,False,189,0.004573944356170562
+kuhn_poker,alt,True,False,False,246,0.003527211856346385
+kuhn_poker,alt,True,False,False,319,0.0021355717474890457
+kuhn_poker,alt,True,False,False,415,0.002066587678739379
+kuhn_poker,alt,True,False,False,539,0.0017033627682307428
+kuhn_poker,alt,True,False,False,701,0.0009143638829439416
+kuhn_poker,alt,True,False,False,911,0.0007827263388176797
+kuhn_poker,alt,True,False,False,1184,0.0009006006974719705
+kuhn_poker,alt,True,False,False,1539,0.000644601429046765
+kuhn_poker,alt,True,False,False,2000,0.0005392433667742169
+kuhn_poker,alt+RM+,True,False,True,1,0.45833333333333326
+kuhn_poker,alt+RM+,True,False,True,2,0.27083333333333337
+kuhn_poker,alt+RM+,True,False,True,3,0.1775446775446776
+kuhn_poker,alt+RM+,True,False,True,4,0.14578823953823958
+kuhn_poker,alt+RM+,True,False,True,5,0.10339671272423609
+kuhn_poker,alt+RM+,True,False,True,6,0.07859849782307882
+kuhn_poker,alt+RM+,True,False,True,8,0.05690828613045762
+kuhn_poker,alt+RM+,True,False,True,11,0.05327607519004407
+kuhn_poker,alt+RM+,True,False,True,14,0.030877686875380617
+kuhn_poker,alt+RM+,True,False,True,18,0.031167071107204347
+kuhn_poker,alt+RM+,True,False,True,23,0.019252689744279655
+kuhn_poker,alt+RM+,True,False,True,30,0.01660835624360857
+kuhn_poker,alt+RM+,True,False,True,39,0.01330948491359496
+kuhn_poker,alt+RM+,True,False,True,51,0.009882746667643438
+kuhn_poker,alt+RM+,True,False,True,66,0.006940986203302774
+kuhn_poker,alt+RM+,True,False,True,86,0.00543642631616717
+kuhn_poker,alt+RM+,True,False,True,112,0.003935065242873459
+kuhn_poker,alt+RM+,True,False,True,145,0.003674775038279149
+kuhn_poker,alt+RM+,True,False,True,189,0.0028014789841714627
+kuhn_poker,alt+RM+,True,False,True,246,0.002051914950562478
+kuhn_poker,alt+RM+,True,False,True,319,0.0015125144335475516
+kuhn_poker,alt+RM+,True,False,True,415,0.0012240552161905949
+kuhn_poker,alt+RM+,True,False,True,539,0.000855617712309853
+kuhn_poker,alt+RM+,True,False,True,701,0.0006394601980412307
+kuhn_poker,alt+RM+,True,False,True,911,0.0005260876232358602
+kuhn_poker,alt+RM+,True,False,True,1184,0.0004171149126700746
+kuhn_poker,alt+RM+,True,False,True,1539,0.00035255205719511573
+kuhn_poker,alt+RM+,True,False,True,2000,0.0002603666308325925
+kuhn_poker,alt+lin,True,True,False,1,0.45833333333333326
+kuhn_poker,alt+lin,True,True,False,2,0.26388888888888884
+kuhn_poker,alt+lin,True,True,False,3,0.15625
+kuhn_poker,alt+lin,True,True,False,4,0.12708333333333338
+kuhn_poker,alt+lin,True,True,False,5,0.11620370370370373
+kuhn_poker,alt+lin,True,True,False,6,0.0948837868480725
+kuhn_poker,alt+lin,True,True,False,8,0.09398267998476414
+kuhn_poker,alt+lin,True,True,False,11,0.09322472291245229
+kuhn_poker,alt+lin,True,True,False,14,0.05726081416080822
+kuhn_poker,alt+lin,True,True,False,18,0.04595556477308255
+kuhn_poker,alt+lin,True,True,False,23,0.029104176191012215
+kuhn_poker,alt+lin,True,True,False,30,0.022605861241008857
+kuhn_poker,alt+lin,True,True,False,39,0.015963463947049727
+kuhn_poker,alt+lin,True,True,False,51,0.01408840856548299
+kuhn_poker,alt+lin,True,True,False,66,0.006621135016757873
+kuhn_poker,alt+lin,True,True,False,86,0.008273597513129644
+kuhn_poker,alt+lin,True,True,False,112,0.006619233714465822
+kuhn_poker,alt+lin,True,True,False,145,0.004672263030685714
+kuhn_poker,alt+lin,True,True,False,189,0.0033811051213956667
+kuhn_poker,alt+lin,True,True,False,246,0.003036500776402412
+kuhn_poker,alt+lin,True,True,False,319,0.002290534749079254
+kuhn_poker,alt+lin,True,True,False,415,0.0018183383827464206
+kuhn_poker,alt+lin,True,True,False,539,0.0012728242012044477
+kuhn_poker,alt+lin,True,True,False,701,0.0007280081384302417
+kuhn_poker,alt+lin,True,True,False,911,0.0008018119667167756
+kuhn_poker,alt+lin,True,True,False,1184,0.0007158097332002344
+kuhn_poker,alt+lin,True,True,False,1539,0.0002986556690205422
+kuhn_poker,alt+lin,True,True,False,2000,0.00035811015404632607
+kuhn_poker,alt+lin+RM+,True,True,True,1,0.45833333333333326
+kuhn_poker,alt+lin+RM+,True,True,True,2,0.26388888888888884
+kuhn_poker,alt+lin+RM+,True,True,True,3,0.14131701631701638
+kuhn_poker,alt+lin+RM+,True,True,True,4,0.10014430014430015
+kuhn_poker,alt+lin+RM+,True,True,True,5,0.07334452949594789
+kuhn_poker,alt+lin+RM+,True,True,True,6,0.0504587006585685
+kuhn_poker,alt+lin+RM+,True,True,True,8,0.027794111052289877
+kuhn_poker,alt+lin+RM+,True,True,True,11,0.028900152549858893
+kuhn_poker,alt+lin+RM+,True,True,True,14,0.017230440608545783
+kuhn_poker,alt+lin+RM+,True,True,True,18,0.012278635793780357
+kuhn_poker,alt+lin+RM+,True,True,True,23,0.006662477561636043
+kuhn_poker,alt+lin+RM+,True,True,True,30,0.005357787593172708
+kuhn_poker,alt+lin+RM+,True,True,True,39,0.0035828390901542495
+kuhn_poker,alt+lin+RM+,True,True,True,51,0.003000893013410305
+kuhn_poker,alt+lin+RM+,True,True,True,66,0.0018067254945056954
+kuhn_poker,alt+lin+RM+,True,True,True,86,0.001562581125225393
+kuhn_poker,alt+lin+RM+,True,True,True,112,0.0008619496259088255
+kuhn_poker,alt+lin+RM+,True,True,True,145,0.0008082646409655891
+kuhn_poker,alt+lin+RM+,True,True,True,189,0.0005847830832093615
+kuhn_poker,alt+lin+RM+,True,True,True,246,0.00022776610840902212
+kuhn_poker,alt+lin+RM+,True,True,True,319,0.0004286176229414407
+kuhn_poker,alt+lin+RM+,True,True,True,415,0.0002160685131303297
+kuhn_poker,alt+lin+RM+,True,True,True,539,0.00017806747831783376
+kuhn_poker,alt+lin+RM+,True,True,True,701,5.872154192151924e-05
+kuhn_poker,alt+lin+RM+,True,True,True,911,8.942971695918844e-05
+kuhn_poker,alt+lin+RM+,True,True,True,1184,7.399345824182779e-05
+kuhn_poker,alt+lin+RM+,True,True,True,1539,9.120909910476094e-05
+kuhn_poker,alt+lin+RM+,True,True,True,2000,4.3648619373365394e-05

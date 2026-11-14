@@ -1,0 +1,254 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Define Article %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Using Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[breaklinks]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Colors: one blue theme %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{deepBlue}{RGB}{31,78,140}      % headings, rules, table headers
+\definecolor{midBlue}{RGB}{61,124,222}      % links, accents
+\definecolor{shallowBlue}{RGB}{235,243,252} % shaded rows, boxes
+\definecolor{textGray}{RGB}{90,90,90}       % header/footer text
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Other Settings
+\hypersetup{
+    colorlinks = true,
+    linkcolor = midBlue,
+    urlcolor = midBlue,
+}
+\urlstyle{same}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Page Setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{a4paper, margin=2.2cm}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{\color{textGray}\small ROB 538 - Multiagent Systems}
+\fancyhead[C]{\color{textGray}\small Project Proposal}
+\fancyhead[R]{\color{textGray}\small Mushtaq \& Khawaja}
+\fancyfoot{}
+\fancyfoot[C]{\color{textGray}\thepage}
+\renewcommand{\headrule}{{\color{deepBlue}\hrule height 0.6pt}}
+
+\titleformat{\section}{\Large\bfseries\color{deepBlue}}{}{0em}{}[\vspace{-0.6em}\textcolor{deepBlue}{\rule{\linewidth}{0.6pt}}]
+\titlespacing*{\section}{0pt}{1.4em}{0.8em}
+\titleformat{\subsection}{\large\bfseries\color{deepBlue}}{}{0em}{}
+\setlist{itemsep=3pt,topsep=4pt}
+\setlist[itemize]{label=\textcolor{deepBlue}{\textbullet}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Custom helpers %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In-text citation: links to the numbered entry in the Citations list, e.g. [2]
+\newcommand{\citep}[1]{\ref{#1}}
+
+% Highlighted box for the research question
+\newmdenv[topline=false,bottomline=false,rightline=false,linewidth=3pt,
+  linecolor=deepBlue,backgroundcolor=shallowBlue,
+  innerleftmargin=14pt,innerrightmargin=14pt,innertopmargin=10pt,innerbottommargin=10pt]{rqbox}
+
+% Tables: white bold text on a blue header row, shaded body rows
+\newcommand{\tablestyle}{\renewcommand{\arraystretch}{1.35}\rowcolors{2}{shallowBlue}{white}\arrayrulecolor{deepBlue}}
+\newcommand{\headrow}{\rowcolor{deepBlue}}
+\newcommand{\hd}[1]{\textcolor{white}{\textbf{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title page %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\centering
+{\color{deepBlue}\rule{\linewidth}{2pt}}\\[6mm]
+{\huge\bfseries\color{deepBlue} Oregon State University}\\[2mm]
+{\Large\bfseries Multiagent Systems - ROB 538}\\[4mm]
+{\color{deepBlue}\rule{\linewidth}{0.6pt}}
+
+\vspace*{18mm}
+{\LARGE\bfseries Final Project Proposal \& Initial Outline}\\[8mm]
+\colorbox{shallowBlue}{\parbox{0.86\linewidth}{\centering\vspace{4mm}
+  {\Large\bfseries\color{deepBlue} Adaptive CFR$^+$:}\\[2mm]
+  {\Large Adapting Regret Updates to Local Regret Dynamics\\ in Imperfect-Information Games}
+  \vspace{4mm}}}
+
+\vspace*{16mm}
+% Put the OSU logo next to this file as "OSU logo.png" to show it here
+\IfFileExists{OSU logo.png}{\includegraphics[width=0.32\linewidth]{OSU logo.png}\\[12mm]}{}
+{\Large Sadiqah Mushtaq \quad\textcolor{deepBlue}{\textbullet}\quad Umna Khawaja}\\[6mm]
+{\large \textbf{Instructor:} Kagan Tumer}
+
+\vfill
+{\color{deepBlue}\rule{\linewidth}{0.6pt}}\\[2mm]
+{\large Due: October 6, 2026}
+\end{titlepage}
+
+%===============================================================================
+\section{Paper Title}
+
+\textbf{Adaptive CFR$^+$: Adapting Regret Updates to Local Regret Dynamics in
+Imperfect-Information Games}
+
+%===============================================================================
+\section{General Summary of Proposed Paper}
+
+In games like poker, each agent sees only part of the game: its own cards, but not its
+opponents'. A standard way to find good strategies for such games is Counterfactual Regret
+Minimization (CFR), in which agents repeatedly play against each other and each one learns from
+its \emph{regret}: how much better it could have done by choosing differently.
+CFR$^+$~\citep{tammelin} is a faster version of CFR, and Predictive CFR$^+$~\citep{farina}
+speeds it up further by having each agent guess its next regret and act on that guess early.
+
+Our project will build on CFR$^+$ by investigating whether its regret updates
+can be made adaptive. Instead of applying the same update behavior at
+every information set, we will use the recent history of regret at each
+information set to determine how aggressively that information set should be
+updated. The goal is to make the algorithm respond more quickly when regret is
+changing substantially while avoiding unnecessary updates when regret has
+stabilized.
+
+We will implement and evaluate this Adaptive CFR$^+$ method using OpenSpiel
+on Kuhn Poker and Leduc Poker. We will compare it against CFR, CFR$^+$, and,
+where feasible, predictive CFR methods. Our primary evaluation will measure
+exploitability as a function of the number of iterations, allowing us to
+determine whether adaptive updates reach approximate Nash equilibrium faster
+than existing CFR variants. As a \textbf{bonus}, if time allows, we will test
+whether the results hold in three-player poker.
+
+\begin{rqbox}
+\textbf{\color{deepBlue}Research Question.} Can adapting the CFR$^+$ regret-update strength according to local
+regret dynamics improve convergence in imperfect-information games?
+\end{rqbox}
+
+\subsection*{Agent Specification}
+\begin{itemize}
+\item \textbf{System objective:} Minimize exploitability, using exploitability
+as the primary measure of convergence toward a Nash equilibrium in
+two-player zero-sum games.
+\item \textbf{Payoff:} Game utility, such as chips won or lost.
+\item \textbf{Optimization signal:} Counterfactual regret.
+\item \textbf{Information state:} Private cards, public cards when applicable,
+and betting history.
+\item \textbf{Learning algorithm:} CFR, CFR$^+$, and our proposed Adaptive
+CFR$^+$.
+\item \textbf{Primary investigation:} Whether adaptive regret updates reduce
+exploitability faster than standard CFR and CFR$^+$.
+\item \textbf{Secondary investigation:} Whether the benefit of adaptation
+differs between Kuhn Poker and the larger Leduc Poker game.
+\item \textbf{Bonus investigation:} Whether the benefit of adaptation carries
+over from two-player to three-player poker, if time allows.
+\end{itemize}
+
+\subsection*{Problem Environment}
+\begin{center}
+\tablestyle
+\begin{tabularx}{0.9\linewidth}{|>{\bfseries}l|X|X|}
+\hline
+\headrow & \hd{Project 1: 2-player poker} & \hd{Project 2 (bonus): 3-player poker} \\ \hline
+Observable                 & Partially  & Partially \\ \hline
+Deterministic/Stochastic   & Stochastic environment, strategic reward
+                           & Stochastic environment, strategic reward \\ \hline
+Repetitive/Sequential      & Sequential & Sequential \\ \hline
+Episodic                   & Episodic   & Episodic \\ \hline
+Static/Dynamic             & Static     & Static \\ \hline
+Discrete/Continuous        & Discrete   & Discrete \\ \hline
+\end{tabularx}
+\end{center}
+
+%===============================================================================
+\section{Background}
+
+CFR~\citep{zinkevich} places a simple learner at every information set, a set of game
+situations an agent cannot tell apart. In two-player zero-sum games, the average of the agents'
+strategies converges to a Nash equilibrium. CFR$^+$ changes three things: negative regrets are
+reset to zero, players update one at a time, and later iterations count more in the average.
+These changes made CFR$^+$ fast enough to solve heads-up limit Texas hold'em. Kuhn poker
+(3 cards, one betting round) and Leduc poker~\citep{southey} (6 cards, two betting rounds and a
+public card) are small poker games that are standard for testing these algorithms. Both are
+available in OpenSpiel~\citep{openspiel}.
+
+We have already reproduced the main result of the CFR$^+$ paper on both games using OpenSpiel.
+CFR$^+$ reached about \textbf{12$\times$} lower exploitability than CFR on Kuhn poker and about
+\textbf{46$\times$} lower on Leduc poker.
+
+Our proposed method builds on these ideas by making the regret update
+adaptive at the information-set level. We will investigate whether the
+algorithm can use recent regret behavior to determine when an information set
+should receive a more aggressive or more conservative update. For example,
+information sets with rapidly changing regret may benefit from larger updates,
+while information sets whose regret has stabilized may benefit from smaller
+updates.
+
+Kuhn Poker and Leduc Poker provide small, controlled environments in which
+these algorithms can be evaluated efficiently.
+
+%===============================================================================
+\section{Proposed Timeline}
+
+\begin{center}
+\tablestyle
+\begin{tabularx}{0.9\linewidth}{|c|X|}
+\hline
+\headrow\hd{Week} & \hd{Milestone} \\ \hline
+2    & Project proposal; CFR vs.\ CFR$^+$ baseline reproduced (\textcolor{deepBlue}{\textbf{done}}) \\ \hline
+3--4 & Implement our own CFR, CFR$^+$ and Predictive CFR$^+$; \textbf{paper intro \& background} \\ \hline
+5--7 & Implement the adaptive method; run main two-player Kuhn and Leduc experiments \\ \hline
+8    & Run ablation studies and begin \textbf{paper draft} \\ \hline
+9    & Final experiments and figures; bonus: three-player poker \\ \hline
+10   & \textbf{Presentation} \\ \hline
+11   & \textbf{Final paper} \\ \hline
+\end{tabularx}
+\end{center}
+
+%===============================================================================
+\section{Previous Work}
+
+\begin{center}
+\tablestyle
+\begin{tabularx}{0.9\linewidth}{|>{\raggedright\arraybackslash}p{3.6cm}|X|}
+\hline
+\headrow\hd{Method} & \hd{Contribution} \\ \hline
+CFR~\citep{zinkevich}               & Introduced counterfactual regret minimization for imperfect-information games. \\ \hline
+CFR$^+$~\citep{tammelin}            & Regret matching$^+$, alternating updates and linear averaging; used to solve heads-up limit hold'em. The method we build on. \\ \hline
+Discounted CFR~\citep{brown}        & Down-weights early iterations with a fixed discount to speed up convergence. \\ \hline
+Predictive CFR$^+$~\citep{farina}   & Predicts the next regret and acts on it early, with the same prediction everywhere. \\ \hline
+\end{tabularx}
+\end{center}
+
+%===============================================================================
+\section{Citations}
+
+\begin{enumerate}[label={[\arabic*]}]
+  \item \label{zinkevich}M. Zinkevich, M. Johanson, M. Bowling, C. Piccione.
+        \href{https://poker.cs.ualberta.ca/publications/NIPS07-cfr.pdf}{Regret Minimization
+        in Games with Incomplete Information}. NeurIPS, 2007.
+  \item \label{tammelin}O. Tammelin, N. Burch, M. Johanson, M. Bowling.
+        \href{https://webdocs.cs.ualberta.ca/~games/poker/publications/2015-ijcai-cfrplus.pdf}{Solving
+        Heads-up Limit Texas Hold'em}. IJCAI, 2015.
+  \item \label{brown}N. Brown, T. Sandholm.
+        \href{https://arxiv.org/abs/1809.04040}{Solving Imperfect-Information Games via
+        Discounted Regret Minimization}. AAAI, 2019.
+  \item \label{farina}G. Farina, C. Kroer, T. Sandholm.
+        \href{https://arxiv.org/abs/2007.14358}{Faster Game Solving via Predictive Blackwell
+        Approachability: Connecting Regret Matching and Mirror Descent}. AAAI, 2021.
+  \item \label{southey}F. Southey et al.
+        \href{https://arxiv.org/abs/1207.1411}{Bayes' Bluff: Opponent Modelling in Poker}.
+        UAI, 2005.
+  \item \label{openspiel}M. Lanctot et al.
+        \href{https://arxiv.org/abs/1908.09453}{OpenSpiel: A Framework for Reinforcement
+        Learning in Games}. arXiv, 2019.
+\end{enumerate}
+
+\end{document}

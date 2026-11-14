@@ -1,0 +1,23 @@
+\begin{abstract}
+Many multiagent settings, such as poker, negotiation and security planning, require agents to
+make decisions without knowing what their opponents know.
+Strong strategies for these imperfect-information games can be learned through repeated
+self-play, in which agents learn from their regret, but every round traverses the entire game
+tree, so the number of iterations needed largely determines which games can be solved.
+Counterfactual Regret Minimization (CFR) is the leading approach, and its variants speed it up
+by changing how regrets are accumulated, with recent ones even adapting these choices
+automatically.
+However, these methods still apply the same rule for how much past regret to keep at every
+information set, even though regret changes rapidly at some and has already stabilized at
+others.
+In this work, we present Locally Adaptive Discounted \cfrp{} (\ours{}), in which each
+information set chooses its own regret discount based on how volatile its recent regrets are,
+without offline training or game-specific tuning.
+We compare \ours{} against established CFR variants on Kuhn and Leduc poker to test whether
+adapting discounting locally leads to faster convergence.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Multiagent Systems, Game Theory, Counterfactual Regret Minimization, Imperfect-Information
+Games, Nash Equilibrium
+\end{IEEEkeywords}

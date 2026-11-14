@@ -1,0 +1,162 @@
+\section{Background}
+
+This section defines the problem setting (Sections~\ref{sec:efg}--\ref{sec:domains}), the
+foundations our method builds on (Section~\ref{sec:cfr}), and the existing approaches to
+speeding up CFR (Section~\ref{sec:variants}).
+
+\subsection{Extensive-Form Games and Nash Equilibrium}
+\label{sec:efg}
+
+We model the problem as a finite \emph{extensive-form game} with imperfect
+information~\cite{shoham2008multiagent}. Players in a set $N$ take turns acting, with a special
+\emph{chance} player representing random events such as card deals. A \emph{history} $h$ is a
+sequence of actions from the start of the game, $Z$ is the set of terminal histories, and
+$u_i(z)$ is player $i$'s payoff at $z \in Z$. Histories that player $i$ cannot distinguish,
+because they differ only in information hidden from $i$, are grouped into an \emph{information
+set} $I \in \mathcal{I}_i$. The actions $A(I)$ available are the same at every history in $I$.
+
+A \emph{strategy} $\sigma_i$ assigns a probability distribution $\sigma_i(I,\cdot)$ over $A(I)$
+to every information set of player $i$, and a \emph{strategy profile} $\sigma$ contains one
+strategy per player. We write $\pi^\sigma(h)$ for the probability of reaching $h$ under
+$\sigma$, and $\pi^\sigma_{-i}(h)$ for the part of that probability contributed by chance and
+all players other than $i$. The expected payoff is $u_i(\sigma) = \sum_{z\in Z}\pi^\sigma(z)\,
+u_i(z)$.
+
+A profile is a \emph{Nash equilibrium} if no player can improve its payoff by unilaterally
+changing its strategy. In two-player zero-sum games ($u_1 = -u_2$), we measure distance from
+equilibrium with \emph{exploitability},
+\begin{equation}
+  e(\sigma) = \frac{1}{2}\sum_{i\in\{1,2\}}\Big(\max_{\sigma_i'} u_i(\sigma_i',\sigma_{-i})
+  - u_i(\sigma)\Big),
+  \label{eq:expl}
+\end{equation}
+the average amount that a best-responding opponent could gain. Exploitability is zero exactly
+at a Nash equilibrium. Exploitability is computed exactly by a best-response tree traversal, and is the
+standard metric for comparing CFR variants~\cite{tammelin2015solving, brown2019solving}.
+
+\subsection{Problem Domains}
+\label{sec:domains}
+
+We evaluate on two standard poker benchmarks small enough for exploitability to be computed
+exactly.
+
+\emph{Kuhn poker}~\cite{kuhn1950simplified} uses a three-card deck (Jack, Queen, King). Each of
+two players antes one chip and receives one private card, followed by a single betting round
+in which players may check, bet one chip, call or fold. If no one folds, the higher card wins. The game has 12 information sets, and its equilibria are known in
+closed form, which makes it a useful correctness check.
+
+\emph{Leduc poker}~\cite{southey2005bayes} uses a six-card deck containing two suits of Jack,
+Queen and King. Each player antes one chip and receives one private card. After a first betting
+round with bets of two chips, one public card is revealed, followed by a second round with bets
+of four chips, with at most two raises per round. A player whose private card pairs the public
+card wins; otherwise the higher card wins. Leduc poker adds two features that make full
+Texas hold'em hard, multiple betting rounds and shared public information, while having only
+936 information sets.
+
+Both games are provided by OpenSpiel~\cite{lanctot2019openspiel}, an open-source framework that
+implements the game rules, tabular policies, CFR and \cfrp{}, and exact exploitability.
+OpenSpiel also provides three-player versions of both games.
+
+\subsection{Regret Minimization and CFR}
+\label{sec:cfr}
+
+\emph{Regret} measures how much better an agent would have done had it always played a fixed
+action instead of its actual sequence of strategies. An algorithm is \emph{no-regret} if its
+average regret goes to zero. A central result connects learning to equilibrium: if both players
+of a two-player zero-sum game have average regret at most $\epsilon$ after $T$ iterations of
+self-play, their \emph{average} strategies form a $2\epsilon$-Nash
+equilibrium~\cite{zinkevich2007regret}. \emph{Regret matching}~\cite{hart2000simple} is a
+simple no-regret algorithm that plays each action in proportion to its positive cumulative
+regret $R^T(a)$:
+\begin{equation}
+  \sigma^{T+1}(a) = \frac{\pos{R^T(a)}}{\sum_{b}\pos{R^T(b)}},
+  \label{eq:rm}
+\end{equation}
+choosing uniformly at random if no regret is positive.
+
+\emph{Counterfactual Regret Minimization}~\cite{zinkevich2007regret} applies regret matching
+independently at every information set. The \emph{counterfactual value} of information set
+$I \in \mathcal{I}_i$ is player $i$'s expected payoff from $I$, weighted by the probability
+that chance and the opponents reach it:
+\begin{equation}
+  v_i^\sigma(I) = \sum_{h\in I}\sum_{z\in Z,\,h\sqsubseteq z}
+  \pi^\sigma_{-i}(h)\,\pi^\sigma(h,z)\,u_i(z),
+\end{equation}
+where $\pi^\sigma(h,z)$ is the probability of reaching $z$ from $h$. Writing $v_i^\sigma(I,a)$
+for the same value when $i$ plays $a$ at $I$, the \emph{instantaneous counterfactual regret}
+at iteration $t$ is
+\begin{equation}
+  r^t_I(a) = v_i^{\sigma^t}(I,a) - v_i^{\sigma^t}(I).
+  \label{eq:instregret}
+\end{equation}
+CFR accumulates $R^t_I(a) = R^{t-1}_I(a) + r^t_I(a)$ and picks the next strategy at each
+information set with~\eqref{eq:rm}. Zinkevich et al.\ showed that the overall regret is bounded
+by the sum of these local regrets, so the average strategy converges to a Nash equilibrium at a
+rate of $O(1/\sqrt{T})$ in two-player zero-sum games.
+
+In \emph{predictive} no-regret learning, the learner acts on a guess of its next loss, so its
+regret depends on how wrong its guesses are rather than on the size of the losses, which can
+speed up learning in games considerably~\cite{rakhlin2013optimization, syrgkanis2015fast}.
+
+\subsection{Faster CFR Variants}
+\label{sec:variants}
+
+\textbf{\cfrp{}}~\cite{tammelin2015solving} makes three changes to CFR. First,
+\emph{regret matching$^+$} keeps cumulative regrets non-negative,
+\begin{equation}
+  R^t_I(a) = \pos{R^{t-1}_I(a) + r^t_I(a)},
+  \label{eq:rmplus}
+\end{equation}
+so an action that becomes good is played immediately. It also updates players in alternation
+and weights iteration $t$ by $t$ in the average strategy, and was used to essentially solve
+heads-up limit Texas hold'em~\cite{bowling2015heads}.
+
+\textbf{Discounted CFR}~\cite{brown2019solving} multiplies accumulated positive regrets by
+$t^\alpha/(t^\alpha+1)$, negative regrets by $t^\beta/(t^\beta+1)$, and average-strategy
+contributions by $(t/(t+1))^\gamma$, with $\alpha=3/2$, $\beta=0$, $\gamma=2$ consistently
+outperforming \cfrp{} in their experiments. These factors depend only on $t$ and are identical at every information
+set.
+
+\textbf{Predictive \cfrp{}}~\cite{farina2021faster} keeps update~\eqref{eq:rmplus} but plays
+from the cumulative regret plus a prediction of the next instantaneous regret,
+\begin{equation}
+  \sigma^{t+1}_I(a) \propto \pos{R^t_I(a) + r^t_I(a)},
+  \label{eq:pcfr}
+\end{equation}
+and \textbf{PDCFR$^+$}~\cite{xu2024minimizing} combines this prediction with DCFR-style
+discounting.
+
+Recent methods make these choices adaptive. \textbf{DDCFR}~\cite{xu2024dynamic} adjusts DCFR's
+discount parameters during a run with a policy trained by reinforcement learning, while
+\textbf{hyperparameter schedules}~\cite{zhang2026faster} change them as fixed functions of $t$.
+\textbf{APCFR$^+$}~\cite{meng2025faster} scales the prediction in~\eqref{eq:pcfr} separately at
+each information set, trusting it less where past predictions were inaccurate. \textbf{VAD-CFR},
+found by an LLM-driven search over CFR variants~\cite{li2026discovering}, adjusts the discount
+using a moving average of regret magnitude, although its authors found this component mattered
+little on unseen games.
+
+As Table~\ref{tab:prior} shows, the prediction has been adapted per information set, but the
+discount on past regret only globally; \ours{} addresses this gap.
+
+\begin{table}[t]
+\centering
+\caption{What existing CFR variants vary during a run, how, and at what scope.}
+\label{tab:prior}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Method} & \textbf{Varies} & \textbf{How} & \textbf{Scope} \\
+\midrule
+\cfrp{}~\cite{tammelin2015solving}         & ---        & fixed         & --- \\
+DCFR~\cite{brown2019solving}               & discount   & fixed in $t$  & global \\
+\pcfrp{}~\cite{farina2021faster}           & ---        & fixed         & --- \\
+PDCFR$^+$~\cite{xu2024minimizing}          & discount   & fixed in $t$  & global \\
+DDCFR~\cite{xu2024dynamic}                 & discount   & learned (RL)  & global \\
+HS~\cite{zhang2026faster}                  & discount   & schedule      & global \\
+APCFR$^+$~\cite{meng2025faster}            & prediction & online        & per info.\ set \\
+VAD-CFR~\cite{li2026discovering}           & discount   & online        & global \\
+\midrule
+\textbf{\ours{} (ours)}                    & \textbf{discount} & \textbf{online} & \textbf{per info.\ set} \\
+\bottomrule
+\end{tabular}
+\end{table}

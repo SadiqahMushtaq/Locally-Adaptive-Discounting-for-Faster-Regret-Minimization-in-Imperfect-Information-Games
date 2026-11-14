@@ -1,0 +1,104 @@
+\section{Introduction}
+
+% Q1: What is the problem and why do I care?
+Solving imperfect-information games is a major challenge in multiagent systems, with
+applications from poker to security~\cite{tambe2011security}, where agents
+have to make strategic decisions without being able to observe the complete state of the
+environment or the private information available to their opponents. A representative example
+of this is poker, where players have to choose actions based on their private cards, public
+information, the betting history, and their beliefs about other players' hidden
+cards~\cite{bowling2015heads, moravcik2017deepstack, brown2018superhuman, brown2019superhuman}. A main
+goal in these settings is to calculate strategies that are difficult for the opponent to
+exploit. A widely used approach for this is Counterfactual Regret Minimization
+(CFR)~\cite{zinkevich2007regret}, since it iteratively improves strategies by minimizing the
+regret over possible actions at every information set. However, convergence may require many
+iterations, making computational efficiency an important concern when solving larger
+games~\cite{tammelin2015solving}.
+
+% Q2: Why is it important/difficult?
+It is difficult to solve imperfect-information games, since an agent has to account for
+uncertainty regarding the underlying game state while also reasoning about the strategic
+responses of other agents. Unlike in perfect-information games, an agent cannot select actions
+based on a fully observed state. It must, instead, learn a strategy that will perform well
+across the multiple possible states that are consistent with its observations. CFR addresses
+this challenge by decomposing regret minimization across information sets; however, the amount
+and pattern of regret may vary substantially across these sets. Some information sets might
+exhibit rapidly changing regret, while others might have relatively stable regret. Applying the
+same update procedure throughout the game might therefore fail to exploit the differences in
+local learning dynamics.
+
+% Q3: What has been done already in this problem area?
+Several methods have already improved the efficiency of regret minimization. CFR introduced an
+iterative framework for minimizing counterfactual regret and established convergence guarantees
+for the average strategy in two-player zero-sum games~\cite{zinkevich2007regret}. \cfrp{} then
+improved practical convergence by using regret matching$^+$, alternating player updates, and
+linear averaging~\cite{tammelin2015solving}. Discounted CFR introduced discounting schemes that
+reduce the influence of earlier iterations and can accelerate convergence~\cite{brown2019solving}.
+Predictive \cfrp{} further explores the use of predicted regret updates to improve game-solving
+speed~\cite{farina2021faster}, and PDCFR$^+$ combines prediction with
+discounting~\cite{xu2024minimizing}. More recent methods also adapt these choices automatically:
+DDCFR learns its discounting with reinforcement learning~\cite{xu2024dynamic}, hyperparameter
+schedules change the discounting over time~\cite{zhang2026faster}, VAD-CFR adjusts discounting
+using a single, game-wide measure of regret volatility~\cite{li2026discovering}, and APCFR$^+$
+adapts the size of its predicted regret updates separately at each information
+set~\cite{meng2025faster}. Together, these methods demonstrate that how regret is modified,
+accumulated, weighted, and updated can drastically affect convergence.
+
+% Q4: What particular problem remains unsolved?
+Despite all of these advances, the question of whether the discounting of past regret should
+adapt to the recent dynamics of individual information sets remains worth investigating. It is
+especially worth noting that a fixed discounting procedure might not respond equally well to
+information sets whose regrets are changing rapidly and to those whose regrets have stabilized.
+Even though existing approaches have modified regret updates, used predictive information, or
+adapted their discounting for the game as a whole, this work investigates a complementary
+approach: adapting the discounting of past regret locally according to recent regret dynamics,
+and whether this improves convergence. An open empirical question is under which conditions
+this would be most beneficial.
+
+% Q5: How did you solve it?
+In this work, we present Locally Adaptive Discounted \cfrp{} (\ours{}). This is a modification
+of \cfrp{} that uses the recent regret history at individual information sets to determine
+how much past regret should be kept. Instead of using an identical discount at each information
+set, our method adjusts the discount according to the observed local regret
+dynamics. The algorithm is implemented using OpenSpiel~\cite{lanctot2019openspiel} and
+evaluated on Kuhn Poker~\cite{kuhn1950simplified} and Leduc Poker~\cite{southey2005bayes},
+two imperfect-information poker games that provide increasingly complex test environments.
+
+% Q6: What is cool about your approach?
+Our main motivation behind \ours{} is that different parts of a game might exhibit different
+learning dynamics. By incorporating the local regret history into the update procedure, the
+method aims to discount past regret more strongly at information sets where the regret is
+changing greatly, so that they respond quickly, while keeping the regret history where it has
+stabilized. This provides a way to investigate whether local adaptation can complement the
+convergence improvements of \cfrp{}. In contrast to a uniform modification applied throughout
+the game, our approach explicitly examines the variation in regret behavior across
+information sets.
+
+% Q7: What were your key results? (for now: how we test, and hypotheses)
+To evaluate \ours{}, we compare it against CFR, \cfrp{}, Discounted CFR, and Predictive
+\cfrp{} on Kuhn and Leduc Poker. As a first step, we reproduce the CFR versus \cfrp{}
+comparison on both games using OpenSpiel, whose CFR implementation uses alternating updates.
+\cfrp{} reaches roughly $12\times$ lower exploitability than CFR on Kuhn Poker after 2000
+iterations and $46\times$ lower on Leduc Poker after 1000 iterations. Our main measure is
+exploitability, which is how much a best-responding opponent could win against the agents'
+average strategy, as a function of the number of iterations. We also compare \ours{} with an
+otherwise identical version that uses a single, game-wide volatility measure, to test whether
+adapting locally is what makes the difference. We hypothesize that \ours{} reaches low
+exploitability in fewer iterations than \cfrp{} and Discounted CFR, that the local version
+outperforms the game-wide version, and that the benefit is larger on Leduc Poker, whose larger
+game tree contains more variation in regret behavior than Kuhn Poker.
+
+% Q8: What are the contributions of this paper?
+The main contributions of this work are:
+\begin{enumerate}
+  \item We develop an adaptive regret-update approach, \ours{}, that incorporates local
+        regret dynamics into \cfrp{} by adapting how much past regret each information set
+        keeps.
+  \item We establish an experimental comparison of our method against established
+        regret-minimization baselines in Kuhn and Leduc Poker.
+  \item We investigate the conditions under which local adaptation improves
+        convergence, including differences between game environments and the effects of
+        individual components through ablation studies.
+\end{enumerate}
+The results provide evidence regarding the potential benefits and limitations of adapting
+regret updates at the information-set level.
