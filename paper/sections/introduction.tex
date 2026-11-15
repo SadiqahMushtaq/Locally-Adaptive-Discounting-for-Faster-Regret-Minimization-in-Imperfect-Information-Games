@@ -51,42 +51,49 @@ especially worth noting that a fixed discounting procedure might not respond equ
 information sets whose regrets are changing rapidly and to those whose regrets have stabilized.
 Even though existing approaches have modified regret updates, used predictive information, or
 adapted their discounting for the game as a whole, this work investigates a complementary
-approach: adapting the discounting of past regret locally according to recent regret dynamics,
-and whether this improves convergence. An open empirical question is under which conditions
+approach: adapting the regret update locally according to recent regret dynamics, and whether
+this improves convergence. An open empirical question is under which conditions
 this would be most beneficial.
 
 % Q5: How did you solve it?
-In this work, we present Locally Adaptive Discounted \cfrp{} (\ours{}). This is a modification
-of \cfrp{} that uses the recent regret history at individual information sets to determine
-how much past regret should be kept. Instead of using an identical discount at each information
-set, our method adjusts the discount according to the observed local regret
-dynamics. The algorithm is implemented using OpenSpiel~\cite{lanctot2019openspiel} and
-evaluated on Kuhn Poker~\cite{kuhn1950simplified} and Leduc Poker~\cite{southey2005bayes},
-two imperfect-information poker games that provide increasingly complex test environments.
+In this work, we present two methods. The first, Locally Adaptive Discounted \cfrp{} (\ours{}),
+is a modification of \cfrp{} that uses the recent regret history at individual information
+sets to determine how much past regret should be kept. Instead of using an identical discount
+at each information set, it adjusts the discount according to the observed local regret
+dynamics. The second, \mix{}, goes further: each information set runs \cfrp{}, Discounted CFR
+and Predictive \cfrp{} side by side, and a small regret-matching learner at that information
+set learns which of them to follow. Both algorithms are implemented using
+OpenSpiel~\cite{lanctot2019openspiel} and evaluated on Kuhn Poker~\cite{kuhn1950simplified} and
+Leduc Poker~\cite{southey2005bayes}, two imperfect-information poker games that provide
+increasingly complex test environments, and on three further games, two sizes of Liar's dice
+and Goofspiel, to test whether the results transfer beyond poker.
 
 % Q6: What is cool about your approach?
 Our main motivation behind \ours{} is that different parts of a game might exhibit different
 learning dynamics. By incorporating the local regret history into the update procedure, the
 method aims to discount past regret more strongly at information sets where the regret is
 changing greatly, so that they respond quickly, while keeping the regret history where it has
-stabilized. This provides a way to investigate whether local adaptation can complement the
-convergence improvements of \cfrp{}. In contrast to a uniform modification applied throughout
-the game, our approach explicitly examines the variation in regret behavior across
-information sets.
+stabilized. \mix{} applies the same idea to the choice of update rule itself: since no existing variant
+is fastest on every game, each information set can follow whichever rule works best there,
+and regret matching over the rules keeps the method no-regret without any parameter to tune.
+In contrast to a uniform modification applied throughout the game, our approach explicitly
+examines the variation in regret behavior across information sets.
 
-% Q7: What were your key results? (for now: how we test, and hypotheses)
-To evaluate \ours{}, we compare it against CFR, \cfrp{}, Discounted CFR, and Predictive
-\cfrp{} on Kuhn and Leduc Poker. As a first step, we reproduce the CFR versus \cfrp{}
-comparison on both games using OpenSpiel, whose CFR implementation uses alternating updates.
-\cfrp{} reaches roughly $12\times$ lower exploitability than CFR on Kuhn Poker after 2000
-iterations and $46\times$ lower on Leduc Poker after 1000 iterations. Our main measure is
-exploitability, which is how much a best-responding opponent could win against the agents'
-average strategy, as a function of the number of iterations. We also compare \ours{} with an
-otherwise identical version that uses a single, game-wide volatility measure, to test whether
-adapting locally is what makes the difference. We hypothesize that \ours{} reaches low
-exploitability in fewer iterations than \cfrp{} and Discounted CFR, that the local version
-outperforms the game-wide version, and that the benefit is larger on Leduc Poker, whose larger
-game tree contains more variation in regret behavior than Kuhn Poker.
+% Q7: What were your key results?
+To evaluate our methods, we compare them against \cfrp{}, Discounted CFR, and Predictive
+\cfrp{}. As a first step, we reproduce the CFR versus \cfrp{} comparison on Kuhn and Leduc
+Poker using OpenSpiel, whose CFR implementation uses alternating updates. \cfrp{} reaches
+roughly $12\times$ lower exploitability than CFR on Kuhn Poker after 2000 iterations and
+$46\times$ lower on Leduc Poker after 1000 iterations. Our main measure is exploitability,
+which is how much a best-responding opponent could win against the agents' average strategy,
+as a function of the number of iterations. We also compare each method with an otherwise
+identical version that adapts at the level of the whole game, to test whether adapting locally
+is what makes the difference. We find that no existing variant is fastest on every game:
+Predictive \cfrp{} is best on Kuhn Poker but worst on Leduc Poker. \ours{} improves on \cfrp{}
+with the same averaging on four of five games, and its local version beats its game-wide
+version on all five, but its gains are modest. \mix{}, without any tuning, is the best method
+on Kuhn and Leduc Poker and within $1.13\times$ of the best on the other three games, and on
+two games it outperforms every rule it combines.
 
 % Q8: What are the contributions of this paper?
 The main contributions of this work are:
@@ -94,8 +101,10 @@ The main contributions of this work are:
   \item We develop an adaptive regret-update approach, \ours{}, that incorporates local
         regret dynamics into \cfrp{} by adapting how much past regret each information set
         keeps.
-  \item We establish an experimental comparison of our method against established
-        regret-minimization baselines in Kuhn and Leduc Poker.
+  \item We develop \mix{}, which selects among existing CFR update rules separately at each
+        information set, and show that it remains no-regret.
+  \item We establish an experimental comparison of our methods against established
+        regret-minimization baselines on Kuhn Poker, Leduc Poker, Liar's dice and Goofspiel.
   \item We investigate the conditions under which local adaptation improves
         convergence, including differences between game environments and the effects of
         individual components through ablation studies.

@@ -1,0 +1,46 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+All methods are implemented in Python on top of OpenSpiel's tabular CFR
+solver~\cite{lanctot2019openspiel}. \cfrp{} and DCFR are OpenSpiel's implementations, and
+\pcfrp{}, \ours{} and MIX-CFR are subclasses of the same solver that change only the regret
+update and the strategy computation. As correctness checks, \ours{} with $v_I$ fixed to $0$
+reproduces OpenSpiel's \cfrp{} exactly, and MIX-CFR with a single expert reproduces \cfrp{}
+and our \pcfrp{} up to floating-point rounding (maximum difference below $10^{-13}$).
+
+\textbf{Games.} We use the five two-player zero-sum games in Table~\ref{tab:games}. Kuhn and
+Leduc poker (Section~\ref{sec:domains}) are the original benchmarks. Liar's dice and
+Goofspiel, both standard CFR benchmarks~\cite{lanctot2009monte}, were added to test whether
+the conclusions transfer beyond poker. In Liar's dice each player privately rolls one die, and
+players alternately make increasing claims about the dice of both players until one calls the
+other a liar. In Goofspiel, players simultaneously bid cards from their hands to win prize
+cards revealed in descending order, without seeing the opponent's bids.
+
+\begin{table}[t]
+\centering
+\caption{Games used in the experiments (all from OpenSpiel).}
+\label{tab:games}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Game} & \textbf{Info.\ sets} & \textbf{Iterations} \\
+\midrule
+Kuhn poker                  & 12    & 2000 \\
+Leduc poker                 & 936   & 1000 \\
+Liar's dice, 3 faces        & 192   & 1000 \\
+Liar's dice, 4 faces        & 1024  & 1000 \\
+Goofspiel, 4 cards          & 162   & 1000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Methods.} We compare \cfrp{}, DCFR ($\alpha=3/2$, $\beta=0$, $\gamma=2$) and \pcfrp{}
+($t^2$ averaging, as in~\cite{farina2021faster}) against \ours{} and MIX-CFR, each in a
+local and a global version. \ours{} uses $\lambda = 0.99$ and $t^2$ averaging. These two
+settings were selected from about 40 configurations evaluated on Kuhn and Leduc poker, and
+were then fixed for the other three games. MIX-CFR uses no tuned parameters, and its experts
+use their default settings. In the ablations, we remove one expert at a time and replace the
+meta learner by its predictive version.
+
+\textbf{Metric.} We report the exploitability~\eqref{eq:expl} of the average strategy, computed
+exactly by OpenSpiel, at 30 log-spaced iterations. All methods traverse the full tree and are
+deterministic, so each configuration is run once.

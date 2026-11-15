@@ -7,14 +7,15 @@ tree, so the number of iterations needed largely determines which games can be s
 Counterfactual Regret Minimization (CFR) is the leading approach, and its variants speed it up
 by changing how regrets are accumulated, with recent ones even adapting these choices
 automatically.
-However, these methods still apply the same rule for how much past regret to keep at every
-information set, even though regret changes rapidly at some and has already stabilized at
-others.
-In this work, we present Locally Adaptive Discounted \cfrp{} (\ours{}), in which each
+However, these methods still apply the same update rule at every information set, even
+though regret changes rapidly at some and has already stabilized at others.
+In this work, we study two ways of adapting the update locally: \ours{}, in which each
 information set chooses its own regret discount based on how volatile its recent regrets are,
-without offline training or game-specific tuning.
-We compare \ours{} against established CFR variants on Kuhn and Leduc poker to test whether
-adapting discounting locally leads to faster convergence.
+and \mix{}, in which each information set learns online which of \cfrp{}, Discounted CFR and
+Predictive \cfrp{} to follow, while remaining a no-regret method.
+On five games, adapting only the discount gives modest gains, whereas \mix{}, without any
+tuning, is the best or close to the best method on every game, while each existing variant
+falls far behind on at least one.
 \end{abstract}
 
 \begin{IEEEkeywords}

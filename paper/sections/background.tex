@@ -37,8 +37,8 @@ standard metric for comparing CFR variants~\cite{tammelin2015solving, brown2019s
 \subsection{Problem Domains}
 \label{sec:domains}
 
-We evaluate on two standard poker benchmarks small enough for exploitability to be computed
-exactly.
+Our two main benchmarks are poker games small enough for exploitability to be computed
+exactly; Section~\ref{sec:setup} adds three non-poker games.
 
 \emph{Kuhn poker}~\cite{kuhn1950simplified} uses a three-card deck (Jack, Queen, King). Each of
 two players antes one chip and receives one private card, followed by a single betting round
@@ -135,8 +135,14 @@ found by an LLM-driven search over CFR variants~\cite{li2026discovering}, adjust
 using a moving average of regret magnitude, although its authors found this component mattered
 little on unseen games.
 
+Finally, regret minimizers can be combined: regret circuits~\cite{farina2019regret} build
+regret minimizers for composite sets from regret minimizers for their parts while preserving
+regret bounds. \mix{} uses a simple instance of this idea, combining several local regret
+minimizers at the same information set.
+
 As Table~\ref{tab:prior} shows, the prediction has been adapted per information set, but the
-discount on past regret only globally; \ours{} addresses this gap.
+discount on past regret only globally, and the choice of update rule is fixed in advance.
+\ours{} and \mix{} address these gaps.
 
 \begin{table}[t]
 \centering
@@ -157,6 +163,7 @@ APCFR$^+$~\cite{meng2025faster}            & prediction & online        & per in
 VAD-CFR~\cite{li2026discovering}           & discount   & online        & global \\
 \midrule
 \textbf{\ours{} (ours)}                    & \textbf{discount} & \textbf{online} & \textbf{per info.\ set} \\
+\textbf{\mix{} (ours)}                     & \textbf{update rule} & \textbf{online} & \textbf{per info.\ set} \\
 \bottomrule
 \end{tabular}
 \end{table}

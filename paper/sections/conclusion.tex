@@ -1,0 +1,25 @@
+\section{Discussion and Conclusion}
+\label{sec:conclusion}
+
+We asked whether adapting the CFR regret update to the local dynamics of each information set
+improves convergence. Our results suggest that it does, but that \emph{what} is adapted
+matters. Adapting only the discount on past regret (\ours{}) helped relative to \cfrp{} with the
+same averaging, and its local version consistently beat its global version, which supports
+the idea that information sets differ in how much past regret they should keep. However, its
+gains were modest, depended on settings selected on the evaluation games, and did not
+transfer to all held-out games. Letting each information set choose among existing update rules
+(MIX-CFR) was much more effective. Without any tuning, it was the best or close to the best
+method on all five games, while every fixed rule was far behind on at least one, and on two
+games it outperformed all of the rules it combines.
+
+\textbf{Limitations.} Our games are small enough for exact exploitability, and the runs are
+limited to 1000--2000 iterations, so it remains open whether the advantage persists in much
+larger games, in longer runs, or with sampling-based CFR. The local meta learner was clearly
+better than the global one on Kuhn and Leduc poker but not on every game, so the benefit of
+local selection also depends on the game. Our convergence guarantee covers the uniform average
+strategy, not the $t^2$-weighted average used in the experiments. Finally, our timings come
+from a Python implementation run in parallel and are approximate.
+
+\textbf{Future work.} Natural extensions are adding more experts, such as PDCFR$^+$ or
+APCFR$^+$, evaluating on larger games with a C++ implementation, and analyzing which features
+of an information set determine the expert it selects.

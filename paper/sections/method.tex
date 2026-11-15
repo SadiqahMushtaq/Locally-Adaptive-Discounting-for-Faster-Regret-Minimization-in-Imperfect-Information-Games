@@ -1,0 +1,79 @@
+\section{Method}
+\label{sec:method}
+
+We study two ways of adapting the regret update to the local dynamics of each information set.
+Both keep the rest of \cfrp{} unchanged: alternating updates, a full tree traversal per
+iteration, and counterfactual values computed exactly as in Section~\ref{sec:cfr}.
+
+\subsection{\ours{}: Locally Adaptive Discounting}
+\label{sec:lad}
+
+\ours{} gives every information set its own discount on past regret,
+\begin{equation}
+  Q^t_I = \pos{\gamma_I\, Q^{t-1}_I + r^t_I}, \qquad
+  \gamma_I = 1 - \big(1 - d_{t-1}\big)\, v_I,
+  \label{eq:lad}
+\end{equation}
+where $d_t = t^{\alpha}/(t^{\alpha}+1)$ is the DCFR discount with $\alpha = 3/2$. The
+\emph{volatility} $v_I \in [0,1]$ measures how much the instantaneous regret of $I$ changes
+between the iterations at which $I$ is reached,
+\begin{equation}
+  v_I = \frac{\operatorname{EMA}\,\lVert r^t_I - r^{t'}_I\rVert^2}
+             {2\,\operatorname{EMA}\big(\lVert r^t_I\rVert^2 + \lVert r^{t'}_I\rVert^2\big)},
+  \label{eq:vol}
+\end{equation}
+where $t'$ is the previous iteration with non-zero regret at $I$ and EMA is an exponential
+moving average with memory $\lambda$. If the regrets keep pointing in the same direction,
+$v_I \approx 0$ and~\eqref{eq:lad} reduces to \cfrp{}; if they flip sign every iteration,
+$v_I \approx 1$ and $I$ is discounted like DCFR. A \emph{global} variant uses one volatility
+computed from the regrets of all information sets.
+
+\subsection{MIX-CFR: Locally Selecting the Update Rule}
+\label{sec:mix}
+
+\begin{algorithm}[t]
+\caption{MIX-CFR update at information set $I$}
+\label{alg:mix}
+\SetKwInOut{Input}{Input}
+\Input{counterfactual regrets $r^t_I$ of the played strategy $\sigma^t_I$}
+\For{each expert $k \in \{\text{\cfrp{}}, \text{DCFR}, \text{\pcfrp{}}\}$}{
+  $g_k \leftarrow \langle \sigma^t_{I,k}, r^t_I\rangle$ \tcp*{gain of $k$ over the mixture}
+  update expert $k$ with its own regret $r^t_I - g_k\mathbf{1}$ and get $\sigma^{t+1}_{I,k}$\;
+}
+$W_I \leftarrow \pos{W_I + g}$ \tcp*{regret matching$^+$ over experts}
+$w \leftarrow W_I / \sum_k W_{I,k}$ (uniform if $W_I = 0$)\;
+$\sigma^{t+1}_I \leftarrow \sum_k w_k\, \sigma^{t+1}_{I,k}$\;
+\end{algorithm}
+
+No single fixed update rule is best on every game (Section~\ref{sec:results}), so MIX-CFR lets
+each information set choose among existing rules online. Every information set runs three local
+regret minimizers, or \emph{experts}, side by side: regret matching$^+$ (\cfrp{}), discounted
+regret matching with DCFR's $\alpha=3/2$, $\beta=0$ (DCFR), and predictive regret
+matching$^+$ (\pcfrp{}). A small meta learner at the same information set plays a mixture of
+their strategies and moves weight toward the expert whose strategy would have earned more there
+(Algorithm~\ref{alg:mix}). Because the played strategy satisfies
+$\langle\sigma^t_I, r^t_I\rangle = 0$, the gain $g_k$ is exactly how much better expert $k$'s
+strategy would have done than the mixture. The meta learner is itself regret
+matching$^+$, so MIX-CFR has no learning rate or other parameter to tune. In the global
+variant, a single meta learner per player receives the gains summed over all of that player's
+information sets.
+
+The decomposition behind Algorithm~\ref{alg:mix} also gives a guarantee. Writing $v$ for the
+counterfactual action values at $I$, the regret of the mixture splits as
+$r^t_I(a) = \big(v(a) - \langle\sigma^t_{I,k}, v\rangle\big) + g_k$ for every expert $k$, so
+summing over iterations,
+\begin{equation}
+  \max_a R^T_I(a) \;\le\; \min_k \Big( \max_a R^T_{I,k}(a) + G^T_{I,k} \Big),
+  \label{eq:mixbound}
+\end{equation}
+where $R^T_{I,k}$ is expert $k$'s own cumulative regret on the observed values and
+$G^T_{I,k} = \sum_t g^t_k$ is the regret of the meta learner with respect to expert $k$. Regret
+matching$^+$ keeps both $G^T_{I,k}$ and the regret of the \cfrp{} expert in
+$O(\sqrt{T})$~\cite{tammelin2015solving}, so the local regret of MIX-CFR is $O(\sqrt{T})$
+regardless of how the other experts behave, and by the CFR decomposition the uniform average
+strategy converges to a Nash equilibrium in two-player zero-sum
+games~\cite{zinkevich2007regret}. Bound~\eqref{eq:mixbound} also shows that, at each information
+set separately, MIX-CFR is never much worse than the best of its experts. This is an instance of
+composing regret minimizers~\cite{farina2019regret}. As with \pcfrp{} and DCFR, our experiments
+use alternating updates and a $t^2$-weighted average strategy, to which this uniform-average
+guarantee does not directly apply.
